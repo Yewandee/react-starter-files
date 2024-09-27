@@ -5,6 +5,10 @@ import { loginStart, loginSuccess, loginFailure, logout } from '../../../redux/s
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from '../../../services/api/axios';
 import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import Logo from '../../../assets/logo.jpg';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 const LOGIN_URL = '/api/account';
 const MERCHANT_URL = '/api/merchant-compliance';
@@ -19,6 +23,7 @@ const LoginForm = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [errMsg, setErrMsg] = useState('');
 
@@ -115,41 +120,51 @@ const LoginForm = () => {
   };
 
   return (
-    <section className="w-[280px] sm:w-[50%] md:w-[60%] lg:w-[70%] bg-white p-8 rounded-lg shadow-lg mx-auto lg:max-w-2xl overflow-y-auto">
+    <section className="bg-white pt-16">
       {/* <p ref={errRef} className={errMsg ? "errmsg" :
         "offscreen"} aria-live='asserive'>{error}</p> */}
-
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
+      <div className="flex justify-center">
+        <img src={Logo} />
+      </div>
+      <h2 className="text-2xl font-semibold mt-6 mb-4">Login</h2>
+      <h2 className="text-[15px] text-black text-opacity-60 mb-6">Kindly fill the field below to login</h2>
       <form onSubmit={handleLogin}>
-        <div className="mb-4">
-          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="email">
+        <div className="mb-6">
+          <label className="block text-black text-[13px] mb-1 lg:mb-2" htmlFor="email">
             Email
           </label>
-          <input
-            type="email"
-            id="email"
-            ref={userRef}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-1 text-sm border border-gray rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
-            required
-          />
+          <div className="relative w-full px-9 py-2 border border-gray rounded-lg">
+            <FontAwesomeIcon icon={faEnvelope} style={{color: 'gray'}} className='absolute top-3 left-3' />
+            <input
+              type="email"
+              id="email"
+              ref={userRef}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="text-sm focus:outline-none"
+              required
+            />
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block text-black text-[11px] lg:text-[13px] mb-2 flex items-center" htmlFor="password">
+        <div className="mb-6">
+          <label className="block text-black text-[13px] mb-1 lg:mb-2" htmlFor="password">
             Password
           </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-1 text-sm border border-gray rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
-            required
-          />
+          <div className="relative w-full pl-9 pr-12 py-2 border border-gray rounded-lg">
+            <FontAwesomeIcon icon={faLock} style={{color: 'gray'}} className='absolute top-3 left-3' />
+            <input
+              type={!showPassword ? 'password' : 'text'}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="text-sm focus:outline-none w-full"
+              required
+            />
+            <button onClick={() => setShowPassword(!showPassword)}><FontAwesomeIcon icon={!showPassword ? faEyeSlash : faEye} style={{color: 'gray'}} className='absolute top-3 right-3' /></button>
+          </div>
         </div>
-        <div className="flex items-center justify-between mb-4">
-          <label className="block text-black text-[12px] lg:text-sm mb-1 lg:mb-2 flex items-center">
+        <div className="flex items-center justify-between mb-6">
+          <label className="block text-black text-[11px] sm:text-xs mb-1 lg:mb-2 flex items-center">
             <input
               type="checkbox"
               checked={rememberMe}
@@ -158,17 +173,17 @@ const LoginForm = () => {
             />
             Remember me
           </label>
-          <Link to="/forgot-password" className="text-[10px] lg:text-[11px] text-blue-800 hover:underline">Forgot password?</Link>
+          <Link to="/forgot-password" className="text-xs lg:text-sm text-priColor hover:underline">Forgot password?</Link>
         </div>
         <button
           type="submit"
-          className="w-full bg-priColor text-sm text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+          className="w-full bg-priColor text-sm text-white py-2 rounded-lg"
           disabled={loading}
         >
           {loading ? 'Logging in...' : 'Log in'}
         </button>
         <div className="text-center mt-4">
-          <Link to="/register" className="text-[11px] lg:text-sm text-priColor">Don't have an account? <span className='text-blue-800'>Sign Up</span></Link>
+          <Link to="/register" className="text-[12px] lg:text-sm">Don't have an account? <span className='text-priColor hover:underline'> Sign Up</span></Link>
         </div>
       </form>
     </section>

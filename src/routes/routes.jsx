@@ -2,7 +2,10 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import MainLayout from '../layout/MainLayout';
 import RequireAuth from '../services/hooks/RequiredAuth';
-import LoginPage from '../pages/Auth/Login/LoginPages';
+import LoginPage from '../pages/Auth/Login/LoginPage';
+import RegisterPage from '../pages/Auth/Register/RegisterPage';
+import ResetPasswordPage from '../pages/Auth/ResetPassword/ResetPasswordPage';
+import ForgotPasswordPage from '../pages/Auth/ForgotPassword/ForgotPasswordPage';
 
 const RoutesSystem = () => {
   return (
@@ -11,11 +14,11 @@ const RoutesSystem = () => {
       {/* public routes */}
 
       <Route path='/login' element={<LoginPage />} />
-      {/* <Route path='/register' element={<RegisterPage />} />
-      <Route path='/confirm-email' element={<ConfirmEmailPage />} />
-      <Route path='/complete-registration' element={<RegisterMultiStepPage />} />
+      <Route path='/register' element={<RegisterPage />} />
       <Route path='/reset-password' element={<ResetPasswordPage />} />
-      <Route path='/forgot-password' element={<ForgotPasswordPage />} /> */}
+      <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+      {/* <Route path='/confirm-email' element={<ConfirmEmailPage />} /> */}
+      {/* <Route path='/complete-registration' element={<RegisterMultiStepPage />} /> */}
 
 
       {/* protected routes */}

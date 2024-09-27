@@ -5,8 +5,8 @@ module.exports = {
     theme: {
       extend: {
         colors: {
-          'priColor': '#272662',
-          'secColoor': '#f7f7f7'
+          'priColor': '#00A049',
+          'secColoor': '#23BF76'
         }
       },
     },
