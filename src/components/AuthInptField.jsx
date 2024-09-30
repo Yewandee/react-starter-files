@@ -16,8 +16,8 @@ function AuthInputField({ label, type, validName, valueName, id, onChange, setOn
                     <FontAwesomeIcon icon={faTimes} />
                 </span>
             </label>
-            <div className="relative w-full pl-9 pr-3 py-2 border border-gray rounded-lg">
-                <FontAwesomeIcon icon={icon} style={{color: 'gray'}} className='absolute top-3 left-3' />
+            <div className="relative w-full pl-9 pr-3 py-1 border border-gray rounded-lg">
+                <FontAwesomeIcon icon={icon} style={{color: 'gray', fontSize: '14px'}} className='absolute top-2.5 left-3' />
                 <input
                     type={type}
                     id={id}
@@ -25,7 +25,7 @@ function AuthInputField({ label, type, validName, valueName, id, onChange, setOn
                     // ref={emailRef}
                     value={valueName}
                     onChange={onChange}
-                    className="text-sm focus:outline-none w-full"
+                    className="bg-transparent text-sm focus:outline-none w-full"
                     required
                     autoComplete='off'
                     aria-invalid={() => validName ? 'false' : 'true'}

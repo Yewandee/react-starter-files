@@ -7,7 +7,7 @@ import { faCheckCircle, faUser, faVoicemail } from '@fortawesome/free-solid-svg-
 import Logo from '../../../assets/logo.jpg';
 import AuthInputField from '../../../components/AuthInptField';
 
-const FORGOT_PASSWORD_URL = '/api/account/forgot-password';
+const FORGOT_PASSWORD_URL = '/api/account/forget-password';
 const EMAIL_REGEX = /^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const ForgotPasswordForm = () => {
@@ -18,6 +18,7 @@ const ForgotPasswordForm = () => {
     const [loading, setLoading] = useState(false);
     const [isTokenSent, setIsTokenSent] = useState(false);
     const [errMsg, setErrMsg] = useState(false);
+    const [successMsg, setSuccessMsg] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,6 +28,7 @@ const ForgotPasswordForm = () => {
 
     useEffect(() => {
         setErrMsg('');
+        setSuccessMsg('');
     }, [email])
 
     const handleLogin = async (e) => {
@@ -46,10 +48,12 @@ const ForgotPasswordForm = () => {
             const data = response.data;
             console.log(data)
 
-            if (data.message === 'Successful') {
+            if (data.requestSuccessful === true) {
                 setIsTokenSent(true);
+                setSuccessMsg(data.message);
             };
         } catch (error) {
+            console.log(error.response)
             if (!error.response) {
                 setErrMsg('No Server Response');
             } else {
@@ -63,12 +67,12 @@ const ForgotPasswordForm = () => {
     };
 
     return (
-        <div className="bg-white pt-16">
+        <div className="pt-8">
             {
                 !isTokenSent ?
                 (
                     <div className="">
-                        <div className="flex justify-center">
+                        <div className="lg:flex justify-center">
                             <img src={Logo} />
                         </div>
                         <h2 className="text-2xl font-semibold mt-6 mb-4">Forgot Password</h2>
@@ -96,7 +100,7 @@ const ForgotPasswordForm = () => {
                             </div>
                             <button
                                 type="submit"
-                                className="w-full bg-priColor text-white py-2 rounded-lg"
+                                className="w-full bg-priColor text-white py-2 rounded-lg mt-5"
                                 disabled={loading}
                             >
                                 {loading ? 'Loading...' : 'Continue'}
@@ -109,11 +113,11 @@ const ForgotPasswordForm = () => {
                 ) :
                 (
                     <div className="text-[13px]">
-                        <div className="flex flex-col justify-center items-center gap-6 py-[20px] px-[40px] mb-8">
+                        <div className="flex flex-col justify-center items-center gap-6 pt-[20px] my-8">
                             <FontAwesomeIcon icon={faCheckCircle} size='4x' style={{color: 'green'}} />
-                            <p className='text-[13px] text-center'>Kindly click the link that was sent to your mail to reset your password.</p>
+                            <p className='text-[13px] text-center'>"Kindly follow the link send to your email for password reset</p>
                         </div>
-                        <Link to='/login' className='text-blue-800 hover:underline'>Go back to Login</Link>
+                        <Link to='/login' className='text-priColor hover:underline'>Go back to Login</Link>
                     </div>
                 )
             }

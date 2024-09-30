@@ -90,7 +90,7 @@ const ResetPasswordForm = () => {
     };
 
     return (
-        <div className="bg-white pt-16">
+        <div className="pt-8">
             {!success ? 
                 (
                     <div className="">
@@ -145,7 +145,7 @@ const ResetPasswordForm = () => {
                             </div>
                             <button
                                 type="submit"
-                                className="w-full bg-priColor text-white py-2 rounded-lg"
+                                className="w-full bg-priColor text-white py-2 rounded-lg mt-5"
                                 disabled={loading}
                             >
                                 {loading ? 'Loading...' : 'Submit'}

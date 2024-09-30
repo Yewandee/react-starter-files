@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import useAuth from '../../../services/hooks/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginStart, loginSuccess, loginFailure, logout } from '../../../redux/slices/authSlice';
+import { loginStart, loginSuccess, loginFailure } from '../../../redux/slices/authSlice';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import useAuth from '../../../services/hooks/useAuth';
 import axios from '../../../services/api/axios';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,6 +16,8 @@ const COMPLIANCE_REG = '/complete-registration';
 
 const LoginForm = () => {
   const { setAuth } = useAuth();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const location = useLocation();
   const userRef = useRef();
@@ -27,20 +29,6 @@ const LoginForm = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [errMsg, setErrMsg] = useState('');
 
-
-  const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
-
-
-  useEffect(() => {
-    dispatch(logout());
-    setAuth({});
-  }, [])
-
-  useEffect(() => {
-    dispatch(logout());
-  })
-
   useEffect(() => {
     userRef.current.focus();
   }, [])
@@ -48,6 +36,10 @@ const LoginForm = () => {
   useEffect(() => {
     setErrMsg('');
   }, [email, password])
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -61,55 +53,28 @@ const LoginForm = () => {
             'Accept': '*/*',
             'Content-Type': 'application/json',
           },
-          withCredentials: true
+          // withCredentials: true
         }
-      )
-
-        const data = response.data.responseData;
-        const accessToken = data.accessToken;
-        const refreshToken = data.refreshToken;
-
-        // //saving merchants data
-        localStorage.setItem('merchantData', JSON.stringify(data.merchants[0]));
-
-        // saving user data
-        localStorage.setItem('userData', JSON.stringify(data.user));
-
-        setAuth({email, password, accessToken, refreshToken});
-        toast.success("Login successful");
-
-        // fetching compliance data to route user to log in screen or create password screen
-
-        const merchantCode = data.merchants[0].merchantCode;
-        console.log(merchantCode);
-
-        const complianceResponse = await fetch(`${process.env.REACT_APP_API_MERCHANT_BASE_URL}${MERCHANT_URL}/${merchantCode}`, {
-            headers: {
-              'Authorization': `Bearer ${accessToken}`,
-              'Accept': 'application/json',
-            },
-          }
-        );
+      );
       
-        const complianceData = await complianceResponse.json();
+      const data = response.data.responseData;
+      const accessToken = data.accessToken;
+      const refreshToken = data.refreshToken;
 
-        if (complianceData.success === true) {
-          dispatch(loginSuccess({accessToken, email}));
+      setAuth({accessToken, refreshToken});
+      dispatch(loginSuccess(data));
+      toast.success("Login successful");
 
-          setEmail('');
-          setPassword('');
-          const from = location.state?.from?.pathname || '/';
-          navigate(from, {replace: true});
-        } else {
-          navigate(COMPLIANCE_REG);
-        }
+      const from = location.state?.from?.pathname || '/';
+      navigate(from, {replace: true});
+      
     } catch (err) {
-      console.log('finally', JSON.stringify(err.response));
+      console.log('finally', JSON.stringify(err.response.data));
       if (!err.response) {
         dispatch(loginFailure('No Server Response'));
       } else {
-        if (err.response.data.responseCode === '400') {
-          toast.error(err.response.data.message || 'Login failed');
+        if (err.response.status === 400) {
+          toast.error(err.response.data.message ?? 'Login failed');
           dispatch(loginFailure(err.response.data.message));
         } else {
           toast.error('Login failed');
@@ -120,10 +85,10 @@ const LoginForm = () => {
   };
 
   return (
-    <section className="bg-white pt-16">
+    <section className="pt-8">
       {/* <p ref={errRef} className={errMsg ? "errmsg" :
         "offscreen"} aria-live='asserive'>{error}</p> */}
-      <div className="flex justify-center">
+      <div className="lg:flex justify-center">
         <img src={Logo} />
       </div>
       <h2 className="text-2xl font-semibold mt-6 mb-4">Login</h2>
@@ -133,7 +98,7 @@ const LoginForm = () => {
           <label className="block text-black text-[13px] mb-1 lg:mb-2" htmlFor="email">
             Email
           </label>
-          <div className="relative w-full px-9 py-2 border border-gray rounded-lg">
+          <div className="relative w-full pl-9 pr-3 py-2 border border-gray rounded-lg">
             <FontAwesomeIcon icon={faEnvelope} style={{color: 'gray'}} className='absolute top-3 left-3' />
             <input
               type="email"
@@ -141,7 +106,7 @@ const LoginForm = () => {
               ref={userRef}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="text-sm focus:outline-none"
+              className="text-sm focus:outline-none w-full bg-transparent"
               required
             />
           </div>
@@ -157,10 +122,10 @@ const LoginForm = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="text-sm focus:outline-none w-full"
+              className="text-sm focus:outline-none w-full bg-transparent"
               required
             />
-            <button onClick={() => setShowPassword(!showPassword)}><FontAwesomeIcon icon={!showPassword ? faEyeSlash : faEye} style={{color: 'gray'}} className='absolute top-3 right-3' /></button>
+            <FontAwesomeIcon icon={!showPassword ? faEyeSlash : faEye} onClick={handleShowPassword} style={{color: 'gray'}} className='absolute top-3 right-3' />
           </div>
         </div>
         <div className="flex items-center justify-between mb-6">

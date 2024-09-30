@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { faGear, faChartLine, faHandshake, faArrowRightFromBracket, faHeadphones } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import logo from "../../src/assets/logo.jpg"
+import Logo from "../assets/logo.jpg"
 
 const Sidebar = ({handleSidebar, updateTitle}) => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -14,9 +14,9 @@ const Sidebar = ({handleSidebar, updateTitle}) => {
     }
 
     return (
-        <div className="relative h-[100vh] flex flex-col bg-priColor text-white py-4 text-[12px] sm:text-[14px] lg:text-[16px]">
-        <div className='bg-priColor w-[85%] md:w-full h-14'>
-            <img src='' alt="CodeByte Logo" className="w-full h-full object-cover" />
+        <div className="relative h-[100vh] flex flex-col bg-black text-white text-[12px] sm:text-[14px] lg:text-[16px] shadow-lg">
+        <div className='bg-white w-[85%] md:w-full md:pr-6 h-14 pt-2 '>
+            <img src={Logo} alt="Logo" className="w-full h-full object-cover" />
         </div>
         <nav className="flex-1 my-2 overflow-y-auto">
             <Link to="/" onClick={() => handleChange('Dashboard')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">

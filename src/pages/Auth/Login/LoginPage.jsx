@@ -1,19 +1,23 @@
-import React from 'react';
-import HeroSection from '../../../components/HeroSection';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import useAuth from '../../../services/hooks/useAuth';
 import LoginForm from './LoginForm';
+import AuthLayout from '../../../components/AuthLayout';
+import { logout } from '../../../redux/slices/authSlice';
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
+  const { setAuth } = useAuth();
+
+  useEffect(() => {
+    dispatch(logout());
+    setAuth({});
+  }, []);
+
   return (
-    <div className="block lg:bg-[transparent] lg:flex h-screen overflow-hidden">
-      <div className="w-[60%] hidden lg:block overflow-hidden">
-        <HeroSection />
-      </div>
-      <div className='lg:w-[40%] flex justify-center lg:block'>
-        <div className="h-full w-[80%] lg:w-full px-16">
-          <LoginForm />
-        </div>
-      </div>
-    </div>
+    <AuthLayout>
+      <LoginForm />
+    </AuthLayout>
   );
 };
 

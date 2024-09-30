@@ -16,15 +16,7 @@ const NAME_REGEX = /^[a-zA-Z]{2,24}$/;
 const PHONE_REGEX = /^[0-9\s\-()]{10,15}$/;
 const EMAIL_REGEX = /^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-const REGISTER_URL = '/api/onboard';
-
-// Sample data for dropdowns
-const countries = [
-    { isoCode: 'NG', name: 'Nigeria' },
-    { isoCode: 'US', name: 'United States' },
-    { isoCode: 'GB', name: 'United Kingdom' },
-    // Add more countries as needed
-];
+const REGISTER_URL = '/api/onboard-merchant';
 
 const industryCategories = [
     { id: 1, name: 'Fintech' },
@@ -36,6 +28,8 @@ const industryCategories = [
 const RegisterForm = () => {
     // const userRef = useRef();
     // const emailRef = useRef();
+    const [countryList, setCountryList] = useState([]);
+    const [showCountryListReload, setShowCountryListReload] = useState(false);
     const errRef = useRef();
 
     const [validBusinessName, setValidBusinessName] = useState(false);
@@ -73,7 +67,28 @@ const RegisterForm = () => {
         industryCategoryId: 1,
     });
 
+    const getCountry = async () => {
+        // e.preventDefault();
+        try {
+            const response = await axios.get('api/country');
+            if (response.data.message === 'Successful') {
+                console.log('The new response is ', response.data);
+                setCountryList(response.data.responseData);
+                setShowCountryListReload(false);
+            } else {
+                setShowCountryListReload(true);
+            }
+        } catch (err) {
+            console.log('Error printing country ', err.response);
+            setShowCountryListReload(true);
+        }
+    }
 
+    useEffect(() =>  {
+        if (countryList.length < 1) {
+            getCountry();
+        }
+    }, [])
 
     // useEffect(() => {
     //   userRef.current.focus();
@@ -108,8 +123,6 @@ const RegisterForm = () => {
         setErrMsg('');
     }, [formData.businessName, formData.contactEmail, formData.contactFirstName, formData.contactLastName, formData.contactPhoneNumber])
 
-
-
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -134,7 +147,6 @@ const RegisterForm = () => {
             setErrMsg('Invalid Entry');
             return;
         }
-
         setLoading(true);
 
         try {
@@ -142,9 +154,8 @@ const RegisterForm = () => {
                 JSON.stringify(formData),
                 {
                     headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
+                    // withCredentials: true
                 })
-
             setSuccess(true);
             toast.success("Registration successful! Please check your email to confirm your account.");
 
@@ -160,10 +171,8 @@ const RegisterForm = () => {
             });
 
         } catch (err) {
-            const errResponse = err.response.data;
-
-            if (errResponse?.responseCode === '500') {
-                setErrMsg('User credentials already exit.');
+            if (err.response.status === 400) {
+                toast(err.response.data.message);
             } else if (!err.response) {
                 setErrMsg('No Server Response');
             } else {
@@ -180,24 +189,24 @@ const RegisterForm = () => {
         <>
             {
                 success ? (
-                    <section className='bg-white pt-16'>
-                        <div className='flex items-center justify-center w-120px h-[120px] mb-8'>
+                    <section className='pt-16'>
+                        <div className='flex items-center justify-center h-[120px] mb-3'>
                             <FontAwesomeIcon icon={faCircleCheck} size='5x' style={{ color: 'green' }} />
                         </div>
                         <p className='mb-4 text-[12px] text-center'>Your account has been created successfully!!!.</p>
-                        <p className='mb-12 text-sm text-center'>Click the link sent to your mail to confirm your account.</p>
+                        <p className='mb-8 text-sm text-center'>Kindly follow the link send to your email for account activation.</p>
 
-                        <div className="text-center mt-4">
-                            <Link to="/login" className="text-[11px] lg:text-sm text-black hover:underline">Otherwise, proceed to <span className='text-[#0000FF]'>Log in</span></Link>
+                        <div className="text-center">
+                            <Link to="/login" className="text-xs lg:text-sm text-black hover:underline">Otherwise, proceed to <span className='text-priColor'>Log in</span></Link>
                         </div>
 
                     </section>
                 ) : (
-                    <section className="bg-white pt-16 overflow-x-scroll">
+                    <section className="pt-8 overflow-x-scroll">
                         <p ref={errRef} className={errMsg ? "errmsg" :
                             "offscreen"} aria-live='asserive'>{errMsg}</p>
 
-                        <div className="flex justify-center">
+                        <div className="lg:flex justify-center mb-8">
                             <img src={Logo} />
                         </div>
                         <h2 className="text-2xl font-semibold mt-6 mb-4">Register</h2>
@@ -309,7 +318,7 @@ const RegisterForm = () => {
                                     )}
                                 />
                             </div>
-                            <div className="block md:flex md:space-x-4">
+                            <div className="block md:flex md:space-x-4 mb-6">
                                 <div className="mb-6 w-full">
                                     <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="country">
                                         Country
@@ -319,15 +328,18 @@ const RegisterForm = () => {
                                         name="country"
                                         value={formData.country}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 text-sm border border-gray rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 text-sm border border-gray rounded-lg focus:outline-none bg-transparent"
                                         required
                                     >
-                                        {countries.map((country) => (
-                                            <option key={country.isoCode} value={country.isoCode}>
-                                                {country.name}
+                                        {countryList.map((country) => (
+                                            <option key={country.id} value={country.id}>
+                                                {country.countryName}
                                             </option>
                                         ))}
                                     </select>
+                                    {showCountryListReload && <div className="w-full mt-2">
+                                        <Link to='' onClick={getCountry} className='text-priColor text-xs text-right cursor'>Retry</Link>
+                                    </div>}
                                 </div>
                                 <div className="mb-6 w-full">
                                     <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="industryCategoryId">
@@ -338,7 +350,7 @@ const RegisterForm = () => {
                                         name="industryCategoryId"
                                         value={formData.industryCategoryId}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 text-sm border border-gray rounded-lg focus:outline-none"
+                                        className="w-full px-3 py-2 text-sm border border-gray rounded-lg focus:outline-none bg-transparent"
                                         required
                                     >
                                         {industryCategories.map((category) => (
@@ -356,7 +368,7 @@ const RegisterForm = () => {
                             >
                                 {loading ? 'Registering...' : 'Register'}
                             </button>
-                            <div className="text-center mt-4">
+                            <div className="text-center mt-4 mb-10">
                                 <Link to="/login" className="text-xs lg:text-sm">Already have an account? <span className='text-priColor hover:underline'> Log In</span></Link>
                             </div>
                         </form>

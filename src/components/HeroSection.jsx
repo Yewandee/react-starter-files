@@ -13,12 +13,12 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-black bg-opacity-55"></div>
 
         {/* Text content with shadow */}
-        <div className="relative z-10 w-[80%]">
-          <h1 className="text-5xl font-semibold mb-6">
+        <div className="relative z-10">
+          <h1 className="text-5xl font-semibold mb-6 w-[80%]">
             Payments Made Easy with <span className="text-6xl text-priColor">PelPay</span>
           </h1>
-          <div className="bg-black bg-opacity-50 p-3">
-            <p className="text-lg shadow-md">
+          <div className="bg-black bg-opacity-50 p-3 w-full lg:w-[80%]">
+            <p className="text-md lg:text-lg shadow-md">
               We help businesses in Africa receive payments from their customers all over the world.
             </p>
           </div>
