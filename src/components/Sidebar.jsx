@@ -5,62 +5,57 @@ import { faGear, faChartLine, faHandshake, faArrowRightFromBracket, faHeadphones
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Logo from "../assets/logo.jpg"
 
-const Sidebar = ({handleSidebar, updateTitle}) => {
+const Sidebar = ({handleSidebar}) => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
-
-    const handleChange = (val) => {
-        updateTitle(val);
-        handleSidebar();
-    }
 
     return (
         <div className="relative h-[100vh] flex flex-col bg-black text-white text-[12px] sm:text-[14px] lg:text-[16px] shadow-lg">
-        <div className='bg-white w-[85%] md:w-full md:pr-6 h-14 pt-2 '>
-            <img src={Logo} alt="Logo" className="w-full h-full object-cover" />
-        </div>
-        <nav className="flex-1 my-2 overflow-y-auto">
-            <Link to="/" onClick={() => handleChange('Dashboard')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
-            <div className='flex items-center gap-2'>
-                <FontAwesomeIcon icon={faChartLine} size='xs' />
-                Sidebar
+            <div className='bg-[#f7f7f7] w-full md:w-full md:pr-6 h-16 pt-2 '>
+                <img src={Logo} alt="Logo" className="w-[85%] h-full object-cover" />
             </div>
-            </Link>
-            <div>
-                <button onClick={() => setDropdownOpen(!isDropdownOpen)} className="block w-full text-left py-2 pr-4 pl-6 hover:bg-blue-700 flex justify-between">
-                    <div className='flex items-center gap-2'>
-                    <FontAwesomeIcon icon={faHandshake} size='xs' />
-                    Dropdown
-                    </div>
-                    {isDropdownOpen ? <FiChevronUp /> : <FiChevronDown />}
-                </button>
-                {isDropdownOpen && (
-                    <div className="ml-4">
-                        <Link to="/settlement/all" onClick={() => handleChange('All Dropdown')} className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Dropdown</Link>
-                        <Link to="/settlement/bank-account" onClick={() => handleChange('Dropdown 1')} className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Dropdown 1</Link>
-                    </div>
-                )}
-            </div>
-        </nav>
-        <nav className="flex-shrink-0">
-            <Link to="/settings" onClick={() => handleChange('Settings')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
-            <div className='flex items-center gap-2'>
-                <FontAwesomeIcon icon={faGear} size='xs' />
-                Settings
-            </div>
-            </Link>
-            <Link to="/settings" onClick={() => handleChange('Help Center')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
-            <div className='flex items-center gap-2'>
-                <FontAwesomeIcon icon={faHeadphones} size='xs' />
-                Help Center
-            </div>
-            </Link>
-            <Link to="/login" className="block py-2 pr-4 pl-6 hover:bg-blue-700">
-            <div className='flex items-center gap-2'>
-                <FontAwesomeIcon icon={faArrowRightFromBracket} size='xs' />
-                Logout
-            </div>
-            </Link>
-        </nav>
+            <nav className="flex-1 my-2 overflow-y-auto">
+                <Link to="/" onClick={() => handleSidebar()} className="block py-2 px-4 hover:bg-priColor">
+                <div className='flex items-center gap-2'>
+                    <FontAwesomeIcon icon={faChartLine} size='xs' />
+                    Sidebar
+                </div>
+                </Link>
+                <div>
+                    <button onClick={() => setDropdownOpen(!isDropdownOpen)} className="block w-full text-left py-2 px-4 hover:bg-priColor flex justify-between">
+                        <div className='flex items-center gap-2'>
+                        <FontAwesomeIcon icon={faHandshake} size='xs' />
+                        Dropdown
+                        </div>
+                        {isDropdownOpen ? <FiChevronUp /> : <FiChevronDown />}
+                    </button>
+                    {isDropdownOpen && (
+                        <div className="ml-4">
+                            <Link to="/settlement/all" onClick={() => handleSidebar()} className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-priColor">Dropdown</Link>
+                            <Link to="/settlement/bank-account" onClick={() => handleSidebar()} className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-priColor">Dropdown 1</Link>
+                        </div>
+                    )}
+                </div>
+            </nav>
+            <nav className="flex-shrink-0">
+                <Link to="/settings" onClick={() => handleSidebar()} className="block py-2 px-4 hover:bg-priColor">
+                <div className='flex items-center gap-2'>
+                    <FontAwesomeIcon icon={faGear} size='xs' />
+                    Settings
+                </div>
+                </Link>
+                <Link to="/settings" onClick={() => handleSidebar()} className="block py-2 px-4 hover:bg-priColor">
+                <div className='flex items-center gap-2'>
+                    <FontAwesomeIcon icon={faHeadphones} size='xs' />
+                    Help Center
+                </div>
+                </Link>
+                <Link to="/login" className="block py-2 px-4 hover:bg-priColor">
+                <div className='flex items-center gap-2'>
+                    <FontAwesomeIcon icon={faArrowRightFromBracket} size='xs' />
+                    Logout
+                </div>
+                </Link>
+            </nav>
         </div>
     );
 };

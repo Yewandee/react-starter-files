@@ -11,8 +11,6 @@ import Logo from '../../../assets/logo.jpg';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 const LOGIN_URL = '/api/account';
-const MERCHANT_URL = '/api/merchant-compliance';
-const COMPLIANCE_REG = '/complete-registration';
 
 const LoginForm = () => {
   const { setAuth } = useAuth();
@@ -58,10 +56,8 @@ const LoginForm = () => {
       );
       
       const data = response.data.responseData;
-      const accessToken = data.accessToken;
-      const refreshToken = data.refreshToken;
 
-      setAuth({accessToken, refreshToken});
+      setAuth({data});
       dispatch(loginSuccess(data));
       toast.success("Login successful");
 
@@ -86,8 +82,6 @@ const LoginForm = () => {
 
   return (
     <section className="pt-8">
-      {/* <p ref={errRef} className={errMsg ? "errmsg" :
-        "offscreen"} aria-live='asserive'>{error}</p> */}
       <div className="lg:flex justify-center">
         <img src={Logo} />
       </div>

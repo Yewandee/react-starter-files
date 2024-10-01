@@ -4,10 +4,9 @@ import useAuth from "./useAuth";
 const RequireAuth = () => {
     const { auth } = useAuth();
     const location = useLocation();
-    console.log('valid access token ', auth?.accessToken);
 
     return (
-        auth?.accessToken
+        auth?.data.accessToken
             ? <Outlet />
             : <Navigate to='/login' state={{ from: location }} replace />
     );
