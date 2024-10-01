@@ -20,12 +20,12 @@ const MainLayout = () => {
           <div className='fixed top-0 left-0 w-48 z-20 block md:hidden'>
             <Sidebar handleSidebar={handleSidebar}/>
             <button
-              className="absolute top-9 right-0 text-white"
+              className="absolute top-4 right-0 text-white"
               onClick={handleSidebar}
             >
-              <div className='flex items-center justify-center border-2 border-white p-2 h-[25px] w-[25px] rounded-full'>
-                <FontAwesomeIcon icon={faXmark} style={{fontSize: '18px'}} />
-              </div>
+              {/* <div className=''> */}
+                <FontAwesomeIcon icon={faXmark} style={{fontSize: '20px', color: 'black'}} />
+              {/* </div> */}
             </button>
           </div>
         )}
@@ -33,7 +33,7 @@ const MainLayout = () => {
           <Sidebar/>
         </div>
         <div className="h-full relative overflow-hidden md:ml-48 lg:ml-64 bg-[#f7f7f7]">
-          <div className='bg-white z-10 p-4 border-b border-gray-300 h-16 fixed top-0 right-0 left-0'>
+          <div className='bg-white z-10 p-4 border-b border-gray-300 h-16 w-full fixed top-0 right-0 left-0 md:pl-48 lg:pl-64'>
             <Header setOpenSidebar={setOpenSidebar} openSidebar={openSidebar} />
           </div>
           <main className="pt-20 pb-5 h-full overflow-hidden">

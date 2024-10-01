@@ -6,7 +6,6 @@ function Dashboard() {
 
     useEffect(() => {
         setAppTitle('Dashboard');
-        console.log('New alert title ', appTitle);
     }, []);
 
   return (

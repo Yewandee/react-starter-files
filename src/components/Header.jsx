@@ -16,6 +16,8 @@ const Header = ({ openSidebar, setOpenSidebar, title }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+  console.log('The new value header is ', appTitle);
 
   const handleLogout = async (e) => {
     e.preventDefault();

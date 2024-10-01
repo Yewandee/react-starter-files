@@ -10,8 +10,8 @@ const Sidebar = ({handleSidebar}) => {
 
     return (
         <div className="relative h-[100vh] flex flex-col bg-black text-white text-[12px] sm:text-[14px] lg:text-[16px] shadow-lg">
-            <div className='bg-[#f7f7f7] w-full md:w-full md:pr-6 h-16 pt-2 '>
-                <img src={Logo} alt="Logo" className="w-[85%] h-full object-cover" />
+            <div className='bg-[#f7f7f7] w-full h-16 flex items-center'>
+                <img src={Logo} alt="Logo" className="max-h-fit max-w-[85%]" />
             </div>
             <nav className="flex-1 my-2 overflow-y-auto">
                 <Link to="/" onClick={() => handleSidebar()} className="block py-2 px-4 hover:bg-priColor">
@@ -21,7 +21,7 @@ const Sidebar = ({handleSidebar}) => {
                 </div>
                 </Link>
                 <div>
-                    <button onClick={() => setDropdownOpen(!isDropdownOpen)} className="block w-full text-left py-2 px-4 hover:bg-priColor flex justify-between">
+                    <button onClick={() => setDropdownOpen(!isDropdownOpen)} className="w-full text-left py-2 px-4 hover:bg-priColor flex justify-between">
                         <div className='flex items-center gap-2'>
                         <FontAwesomeIcon icon={faHandshake} size='xs' />
                         Dropdown
