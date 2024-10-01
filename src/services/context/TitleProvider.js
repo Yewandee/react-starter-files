@@ -1,9 +1,8 @@
-import { createContext, useEffect, useState } from "react";
-
+import { createContext, useState, useEffect } from "react";
 
 const TitleContext = createContext({});
 
-export const TitleProvider = ({children}) => {
+export const TitleProvider = ({ children }) => {
     const [appTitle, setAppTitle] = useState(() => {
         const storedTitle = localStorage.getItem('pelpayTitle');
         return storedTitle ? JSON.parse(storedTitle) : {};
@@ -14,7 +13,7 @@ export const TitleProvider = ({children}) => {
     }, [appTitle]);
 
     return (
-        <TitleContext.Provider value={{appTitle, setAppTitle}}>
+        <TitleContext.Provider value={{ appTitle, setAppTitle }}>
             {children}
         </TitleContext.Provider>
     )

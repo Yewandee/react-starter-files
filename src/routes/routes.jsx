@@ -6,6 +6,7 @@ import LoginPage from '../pages/Auth/Login/LoginPage';
 import RegisterPage from '../pages/Auth/Register/RegisterPage';
 import ResetPasswordPage from '../pages/Auth/ResetPassword/ResetPasswordPage';
 import ForgotPasswordPage from '../pages/Auth/ForgotPassword/ForgotPasswordPage';
+import Dashboard from '../pages/Dashboard/Dashboard';
 
 const RoutesSystem = () => {
   return (
@@ -25,8 +26,8 @@ const RoutesSystem = () => {
 
       <Route element={<RequireAuth />}>
         <Route path='/' element={<MainLayout />}>
-          {/* <Route path="/" element={<Dashboard />} />
-          <Route path="customers" element={<Customers />} />
+          <Route path="/" element={<Dashboard />} />
+          {/* <Route path="customers" element={<Customers />} />
           <Route path="merchants" element={<Merchants />} />
           <Route path="/merchant/credentials/:merchantCode" element={<MerchantCredentials />} />
           <Route path="merchant/credentials/merchantPopUpForm" element={<MerchantPopUpForm />} /> */}

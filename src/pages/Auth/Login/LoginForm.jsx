@@ -65,7 +65,6 @@ const LoginForm = () => {
       navigate(from, {replace: true});
       
     } catch (err) {
-      console.log('finally', JSON.stringify(err.response.data));
       if (!err.response) {
         dispatch(loginFailure('No Server Response'));
       } else {

@@ -6,11 +6,13 @@ import { logout } from '../redux/slices/authSlice';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
+import useTitle from '../services/hooks/useTitle';
 import useAuth from '../services/hooks/useAuth';
 import { axiosPrivate } from '../services/api/axios';
 
 const Header = ({ openSidebar, setOpenSidebar, title }) => {
   const {auth} = useAuth();
+  const { appTitle } = useTitle();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ const Header = ({ openSidebar, setOpenSidebar, title }) => {
     }
   }
 
-  const handleSidebar = ({title}) => {
+  const handleSidebar = () => {
     setOpenSidebar(true);
   }
 
@@ -44,14 +46,14 @@ const Header = ({ openSidebar, setOpenSidebar, title }) => {
           </button>
       }
 
-      <div className={`text-lg font-semibold ${openSidebar === false && 'ml-12'}`}>{title}</div>
+      <div className={`text-lg font-semibold ${openSidebar === false && 'ml-12'}`}>{appTitle}</div>
       <div className="relative">
         <button onClick={() => setDropdownOpen(!isDropdownOpen)} className={`flex items-center ${isDropdownOpen ? 'bg-white mr-10' : 'bg-priColor'} rounded-full py-1 px-2`}>
           <span className={`ml-2 ${!isDropdownOpen ? 'text-white' : 'text-priColor'}`}>{(auth.data.user.firstName).slice(0,1)} {(auth.data.user.lastName).slice(0,1)}</span>
           {
-          !isDropdownOpen
-            ? <FiChevronDown className="ml-1 text-white" />
-            : <FiChevronUp className="ml-1 text-priColor" />
+            !isDropdownOpen
+              ? <FiChevronDown className="ml-1 text-white" />
+              : <FiChevronUp className="ml-1 text-priColor" />
           }
         </button>
         {isDropdownOpen && (
